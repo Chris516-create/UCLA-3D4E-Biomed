@@ -12,7 +12,7 @@ You only need **Python 3**, **Git** and **VS Code**. Nothing to install with pip
 Open VS Code → **Terminal → New Terminal**, then (use your own number instead of 5; on a Mac type `python3`):
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/3D4E-Biomed.git
+git clone https://github.com/Chris516-create/3D4E-Biomed.git
 cd 3D4E-Biomed
 git checkout -b part-5               # 1. your own branch
 python distribute.py take 5          # 2. writes your part into its file
