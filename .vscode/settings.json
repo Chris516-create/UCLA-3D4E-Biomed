@@ -1,0 +1,15 @@
+{
+  "files.autoSave": "afterDelay",
+  "files.eol": "\n",
+  "files.encoding": "utf8",
+  "files.exclude": {
+    "**/__pycache__": true
+  },
+  "editor.tabSize": 2,
+  "[python]": {
+    "editor.tabSize": 4
+  },
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "python.terminal.activateEnvironment": false
+}

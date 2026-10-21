@@ -1,0 +1,4 @@
+# Same line endings on Windows and Mac, so nobody gets surprise changes
+* text=auto eol=lf
+*.png binary
+*.jpg binary

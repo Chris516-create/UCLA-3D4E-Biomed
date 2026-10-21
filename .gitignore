@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Organizer's generated handouts (sent to members, not committed)
+handouts/
+
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+.idea/

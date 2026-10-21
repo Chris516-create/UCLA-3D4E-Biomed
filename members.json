@@ -1,0 +1,19 @@
+{
+  "team": "3D4E Biomed",
+  "repo_url": "https://github.com/YOUR-USERNAME/3D4E-Biomed.git",
+  "organizer": { "name": "Chris", "github": "" },
+  "members": [
+    { "part": 1,  "name": "", "github": "" },
+    { "part": 2,  "name": "", "github": "" },
+    { "part": 3,  "name": "", "github": "" },
+    { "part": 4,  "name": "", "github": "" },
+    { "part": 5,  "name": "", "github": "" },
+    { "part": 6,  "name": "", "github": "" },
+    { "part": 7,  "name": "", "github": "" },
+    { "part": 8,  "name": "", "github": "" },
+    { "part": 9,  "name": "", "github": "" },
+    { "part": 10, "name": "", "github": "" },
+    { "part": 11, "name": "", "github": "" },
+    { "part": 12, "name": "", "github": "" }
+  ]
+}
