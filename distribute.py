@@ -930,7 +930,7 @@ def cmd_handouts():
             "# Part " + str(n) + " · " + p["role"] + " · for " + name, "",
             "Your file: `stress-pet/" + p["path"] + "`  ·  Difficulty: " + "★" * p["difficulty"], "",
             "## Steps (VS Code → Terminal → New Terminal)", "", "```bash",
-            "git clone " + repo_url, "cd 3D4E-Biomed", *git_steps(n), "```", "",
+            "git clone " + repo_url, "cd UCLA-3D4E-Biomed", *git_steps(n), "```", "",
             "Then open a pull request on GitHub (yellow **Compare & pull request** button).", "",
             "After everything is merged:", "", "```bash",
             "git checkout main", "git pull", "python distribute.py check", "python stress-pet/server.py", "```", "",
