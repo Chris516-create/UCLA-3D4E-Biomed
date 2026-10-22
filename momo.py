@@ -28,23 +28,7 @@ except Exception:
 #  PART 1 · The Settings
 # ═════════════════════════════════════════════════════════════════════════════
 
-# Part 1 · The Settings ⚙️
-# Every other part reads these settings. Change them here and the whole pet changes!
-
-PET_NAME = "Momo"
-PORT = 8000  # Momo lives at http://localhost:8000
-
-# The three stress levels, from calm to stressed (order matters!)
-STRESS_LEVELS = ["light", "medium", "heavy"]
-DEFAULT_LEVEL = "light"
-
-# What each level looks like on screen
-LEVEL_INFO = {
-    "light": {"label": "Light", "color": "#8fd9a8", "weather": "🌤️"},
-    "medium": {"label": "Medium", "color": "#ffd166", "weather": "🌥️"},
-    "heavy": {"label": "Heavy", "color": "#ff8a80", "weather": "⛈️"},
-}
-
+# TODO: delete this line and paste Part 1 here
 
 # ───── end of Part 1 ───────────────────────────────────────────────────────
 
@@ -52,7 +36,29 @@ LEVEL_INFO = {
 #  PART 2 · The Face Designer
 # ═════════════════════════════════════════════════════════════════════════════
 
-# TODO: delete this line and paste Part 2 here
+# Part 2 · The Face Designer 😊
+# Momo's face for each stress level, plus the little icon above its head.
+
+FACES = {
+    "light": "^ ‿ ^",
+    "medium": "• _ •",
+    "heavy": "> ﹏ <",
+}
+
+ACCESSORIES = {
+    "light": "🌸",
+    "medium": "💭",
+    "heavy": "💦",
+}
+
+
+def get_face(level):
+    return FACES.get(level, "o _ o")
+
+
+def get_accessory(level):
+    return ACCESSORIES.get(level, "")
+
 
 # ───── end of Part 2 ───────────────────────────────────────────────────────
 
