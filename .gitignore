@@ -4,8 +4,6 @@ __pycache__/
 .venv/
 venv/
 
-# Organizer's generated handouts (sent to members, not committed)
-handouts/
 
 # OS / editor clutter
 .DS_Store
