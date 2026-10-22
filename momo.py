@@ -68,7 +68,29 @@ except Exception:
 #  PART 6 · The Care Kit
 # ═════════════════════════════════════════════════════════════════════════════
 
-# TODO: delete this line and paste Part 6 here
+# Part 6 · The Care Kit 🧘
+# Ways to help Momo relax. Each one lowers stress by one step
+# (heavy -> medium -> light) and Momo says thanks.
+
+ACTIONS = {
+    "breathe": "In... and out... That really helped!",
+    "walk": "A little walk outside cleared my head!",
+    "nap": "Zzz... I feel recharged!",
+}
+
+
+def calmer_level(level):
+    index = STRESS_LEVELS.index(level)
+    return STRESS_LEVELS[max(index - 1, 0)]
+
+
+def do_action(pet, action_name):
+    """Do a care action. Returns Momo's reply, or None if the action is unknown."""
+    if action_name not in ACTIONS:
+        return None
+    pet.set_stress(calmer_level(pet.level))
+    return ACTIONS[action_name]
+
 
 # ───── end of Part 6 ───────────────────────────────────────────────────────
 
