@@ -60,7 +60,35 @@ except Exception:
 #  PART 5 · The Pet's Brain
 # ═════════════════════════════════════════════════════════════════════════════
 
-# TODO: delete this line and paste Part 5 here
+# # Part 5 · The Pet's Brain 🧠
+# The Pet remembers its stress level and packs everything from
+# Parts 1–4 into one bundle for the webpage.
+
+
+class Pet:
+    def __init__(self):
+        self.name = PET_NAME                            # from Part 1
+        self.level = DEFAULT_LEVEL
+
+    def set_stress(self, level):
+        """Change the stress level. Returns True if it worked."""
+        if level not in STRESS_LEVELS:
+            return False
+        self.level = level
+        return True
+
+    def to_dict(self):
+        """Everything the webpage needs to draw Momo."""
+        return {
+            "name": self.name,
+            "level": self.level,
+            "level_info": LEVEL_INFO[self.level],      # from Part 1
+            "face": get_face(self.level),              # from Part 2
+            "accessory": get_accessory(self.level),    # from Part 2
+            "message": get_message(self.level),        # from Part 3
+            "stats": get_stats(self.level),            # from Part 4
+        }
+
 
 # ───── end of Part 5 ───────────────────────────────────────────────────────
 
