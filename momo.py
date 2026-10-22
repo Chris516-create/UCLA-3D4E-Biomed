@@ -76,7 +76,63 @@ except Exception:
 #  PART 7 · The Page Skeleton
 # ═════════════════════════════════════════════════════════════════════════════
 
-# TODO: delete this line and paste Part 7 here
+# Part 7 · The Page Skeleton 🦴
+# Lays out every piece you see on the page: screen, speech bubble, pet,
+# sensor panel and buttons. Each piece has an id so the JavaScript can find it.
+
+PAGE_HTML = r"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stress Pet</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="pet.css">
+</head>
+<body data-level="light">
+  <main class="device">
+    <h1 class="device-title">STRESS PET</h1>
+
+    <section class="screen">
+      <div id="weather" class="weather">🌤️</div>
+      <div id="speech" class="speech">Loading...</div>
+      <div id="pet" class="pet level-light">
+        <span id="accessory" class="accessory">🌸</span>
+        <span id="face" class="face">^ ‿ ^</span>
+      </div>
+      <p class="pet-name"><span id="pet-name">Momo</span> · stress: <b id="level-label">Light</b></p>
+    </section>
+
+    <section class="sensors">
+      <div class="sensor">❤️ <span id="heart-rate">--</span> bpm</div>
+      <div class="sensor">💧 GSR <span id="gsr">--</span> µS</div>
+      <canvas id="ecg" width="320" height="70"></canvas>
+      <label>Happiness <span class="bar"><span id="happiness-bar"></span></span></label>
+      <label>Energy <span class="bar"><span id="energy-bar"></span></span></label>
+    </section>
+
+    <section class="controls">
+      <p class="controls-title">Set stress level</p>
+      <div class="button-row">
+        <button class="stress-btn" data-level="light">Light</button>
+        <button class="stress-btn" data-level="medium">Medium</button>
+        <button class="stress-btn" data-level="heavy">Heavy</button>
+      </div>
+      <p class="controls-title">Help Momo relax</p>
+      <div class="button-row">
+        <button class="care-btn" data-action="breathe">🌬️ Breathe</button>
+        <button class="care-btn" data-action="walk">🚶 Walk</button>
+        <button class="care-btn" data-action="nap">😴 Nap</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="heartbeat.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+"""
 
 # ───── end of Part 7 ───────────────────────────────────────────────────────
 
@@ -84,7 +140,160 @@ except Exception:
 #  PART 8 · The Device Designer
 # ═════════════════════════════════════════════════════════════════════════════
 
-# TODO: delete this line and paste Part 8 here
+# Part 8 · The Device Designer 🎨
+# Makes the page look like a handheld Tamagotchi toy: the egg-shaped
+# body, the screen, the bars and the round buttons.
+
+DEVICE_CSS = r"""
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  background: #f3e9ff;
+  transition: background 0.6s;
+}
+
+body[data-level="medium"] { background: #fff3d6; }
+body[data-level="heavy"]  { background: #ffe1dc; }
+
+.device {
+  width: 340px;
+  padding: 28px 24px 32px;
+  border-radius: 48% 48% 42% 42% / 38% 38% 30% 30%;
+  background: linear-gradient(160deg, #b388ff, #7c4dff);
+  box-shadow: 0 16px 40px rgba(60, 20, 120, 0.35), inset 0 -6px 0 rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.device-title {
+  margin: 4px 0 14px;
+  font-size: 16px;
+  letter-spacing: 4px;
+  color: white;
+}
+
+.screen {
+  position: relative;
+  height: 230px;
+  border-radius: 18px;
+  border: 6px solid #4a2a8a;
+  background: #e8f5e1;
+  overflow: hidden;
+}
+
+.weather {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 22px;
+}
+
+.speech {
+  margin: 12px 34px 0;
+  padding: 6px 10px;
+  border-radius: 12px;
+  background: white;
+  font-size: 13px;
+  min-height: 30px;
+}
+
+.pet-name {
+  position: absolute;
+  bottom: 6px;
+  width: 100%;
+  margin: 0;
+  font-size: 12px;
+  color: #4a2a8a;
+}
+
+.sensors {
+  margin-top: 14px;
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  text-align: left;
+}
+
+.sensor {
+  display: inline-block;
+  width: 48%;
+  font-weight: bold;
+}
+
+#ecg {
+  width: 100%;
+  height: 60px;
+  margin: 6px 0;
+  border-radius: 8px;
+  background: #102018;
+}
+
+.sensors label {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.bar {
+  flex: 1;
+  height: 10px;
+  border-radius: 5px;
+  background: #ddd;
+  overflow: hidden;
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+  width: 50%;
+  background: #7c4dff;
+  transition: width 0.6s;
+}
+
+.controls-title {
+  margin: 14px 0 6px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+.button-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+button {
+  flex: 1;
+  padding: 8px 4px;
+  border: none;
+  border-radius: 999px;
+  background: white;
+  color: #4a2a8a;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+button.active {
+  background: #4a2a8a;
+  color: white;
+}
+"""
 
 # ───── end of Part 8 ───────────────────────────────────────────────────────
 
