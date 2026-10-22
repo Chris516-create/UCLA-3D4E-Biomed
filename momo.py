@@ -28,7 +28,23 @@ except Exception:
 #  PART 1 · The Settings
 # ═════════════════════════════════════════════════════════════════════════════
 
-# TODO: delete this line and paste Part 1 here
+# Part 1 · The Settings ⚙️
+# Every other part reads these settings. Change them here and the whole pet changes!
+
+PET_NAME = "Momo"
+PORT = 8000  # Momo lives at http://localhost:8000
+
+# The three stress levels, from calm to stressed (order matters!)
+STRESS_LEVELS = ["light", "medium", "heavy"]
+DEFAULT_LEVEL = "light"
+
+# What each level looks like on screen
+LEVEL_INFO = {
+    "light": {"label": "Light", "color": "#8fd9a8", "weather": "🌤️"},
+    "medium": {"label": "Medium", "color": "#ffd166", "weather": "🌥️"},
+    "heavy": {"label": "Heavy", "color": "#ff8a80", "weather": "⛈️"},
+}
+
 
 # ───── end of Part 1 ───────────────────────────────────────────────────────
 
