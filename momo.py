@@ -116,7 +116,73 @@ except Exception:
 #  PART 12 · The Web Server
 # ═════════════════════════════════════════════════════════════════════════════
 
-# TODO: delete this line and paste Part 12 here
+# Part 12 · The Web Server 🌐
+# Starts a tiny website on your laptop. It sends the page (Parts 7–11) to the
+# browser and answers its questions: "how is Momo?", "set stress to heavy!"
+
+PAGES = {
+    "/": ("PAGE_HTML", "text/html"),
+    "/style.css": ("DEVICE_CSS", "text/css"),
+    "/pet.css": ("PET_CSS", "text/css"),
+    "/app.js": ("APP_JS", "text/javascript"),
+    "/heartbeat.js": ("HEARTBEAT_JS", "text/javascript"),
+}
+
+
+class PetHandler(BaseHTTPRequestHandler):
+    def send(self, text, content_type, status=200):
+        body = text.encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", content_type + "; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def send_pet(self, message=None):
+        data = momo.to_dict()
+        if message:
+            data["message"] = message
+        self.send(json.dumps(data), "application/json")
+
+    def do_GET(self):
+        url = urlparse(self.path)
+        query = parse_qs(url.query)
+
+        if url.path == "/api/pet":                       # "How is Momo?"
+            self.send_pet()
+        elif url.path == "/api/stress":                  # "Set stress to heavy!"
+            level = query.get("level", [""])[0]
+            if momo.set_stress(level):
+                self.send_pet()
+            else:
+                self.send(json.dumps({"error": "Unknown level: " + level}), "application/json", 400)
+        elif url.path == "/api/action":                  # "Help Momo relax!"
+            reply = do_action(momo, query.get("name", [""])[0])
+            if reply:
+                self.send_pet(reply)
+            else:
+                self.send(json.dumps({"error": "Unknown action"}), "application/json", 400)
+        elif url.path in PAGES:                          # the page itself
+            variable, content_type = PAGES[url.path]
+            self.send(globals()[variable], content_type)
+        else:
+            self.send("Not found", "text/plain", 404)
+
+    def log_message(self, format, *args):
+        pass  # keep the terminal quiet
+
+
+def run_server():
+    global momo
+    momo = Pet()
+    server = HTTPServer(("localhost", PORT), PetHandler)
+    print("🐣 " + PET_NAME + " is alive at  http://localhost:" + str(PORT))
+    print("   (press Ctrl + C to stop)")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\n👋 Bye! " + PET_NAME + " is sleeping now.")
+
 
 # ───── end of Part 12 ───────────────────────────────────────────────────────
 
