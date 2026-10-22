@@ -108,7 +108,66 @@ except Exception:
 #  PART 11 · The Heart Monitor
 # ═════════════════════════════════════════════════════════════════════════════
 
-# TODO: delete this line and paste Part 11 here
+# Part 11 · The Heart Monitor 📈
+# JavaScript that draws a hospital-style ECG line. It beats faster and
+# changes color when Momo is stressed.
+
+HEARTBEAT_JS = r"""
+var bpm = 70;
+var canvas = document.getElementById("ecg");
+var ctx = canvas.getContext("2d");
+var SPEED = 0.12;            // pixels per millisecond
+var x = 0;
+var lastY = canvas.height / 2;
+var clock = 0;               // pretend time, in milliseconds
+var lastFrame = performance.now();
+
+window.setHeartRate = function (newBpm) {
+  bpm = newBpm;
+};
+
+// One heartbeat shape: small bump (P), big spike (R), dip (S), wave (T)
+function heartSignal(msIntoBeat) {
+  function bump(center, width, height) {
+    var d = (msIntoBeat - center) / width;
+    return height * Math.exp(-d * d);
+  }
+  return bump(60, 20, 0.15) + bump(150, 10, 1.0) - bump(175, 10, 0.3) + bump(330, 40, 0.25);
+}
+
+function lineColor() {
+  var level = document.body.dataset.level;
+  if (level === "heavy") return "#ff6b6b";
+  if (level === "medium") return "#ffd166";
+  return "#5ef08a";
+}
+
+function draw(now) {
+  var pixels = Math.floor((now - lastFrame) * SPEED);
+  if (pixels > 0) {
+    lastFrame = now;
+    ctx.strokeStyle = lineColor();
+    ctx.lineWidth = 2;
+    for (var i = 0; i < pixels; i++) {
+      clock += 1 / SPEED;
+      var beatLength = 60000 / bpm;
+      var y = canvas.height * 0.65 - heartSignal(clock % beatLength) * canvas.height * 0.55;
+      ctx.clearRect(x + 1, 0, 12, canvas.height); // erase just ahead of the line
+      ctx.beginPath();
+      ctx.moveTo(x, lastY);
+      ctx.lineTo(x + 1, y);
+      ctx.stroke();
+      x += 1;
+      lastY = y;
+      if (x >= canvas.width) x = 0; // wrap around like a real monitor
+    }
+  }
+  requestAnimationFrame(draw);
+}
+
+requestAnimationFrame(draw);
+"""
+
 
 # ───── end of Part 11 ───────────────────────────────────────────────────────
 
@@ -116,7 +175,73 @@ except Exception:
 #  PART 12 · The Web Server
 # ═════════════════════════════════════════════════════════════════════════════
 
-# TODO: delete this line and paste Part 12 here
+# Part 12 · The Web Server 🌐
+# Starts a tiny website on your laptop. It sends the page (Parts 7–11) to the
+# browser and answers its questions: "how is Momo?", "set stress to heavy!"
+
+PAGES = {
+    "/": ("PAGE_HTML", "text/html"),
+    "/style.css": ("DEVICE_CSS", "text/css"),
+    "/pet.css": ("PET_CSS", "text/css"),
+    "/app.js": ("APP_JS", "text/javascript"),
+    "/heartbeat.js": ("HEARTBEAT_JS", "text/javascript"),
+}
+
+
+class PetHandler(BaseHTTPRequestHandler):
+    def send(self, text, content_type, status=200):
+        body = text.encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", content_type + "; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def send_pet(self, message=None):
+        data = momo.to_dict()
+        if message:
+            data["message"] = message
+        self.send(json.dumps(data), "application/json")
+
+    def do_GET(self):
+        url = urlparse(self.path)
+        query = parse_qs(url.query)
+
+        if url.path == "/api/pet":                       # "How is Momo?"
+            self.send_pet()
+        elif url.path == "/api/stress":                  # "Set stress to heavy!"
+            level = query.get("level", [""])[0]
+            if momo.set_stress(level):
+                self.send_pet()
+            else:
+                self.send(json.dumps({"error": "Unknown level: " + level}), "application/json", 400)
+        elif url.path == "/api/action":                  # "Help Momo relax!"
+            reply = do_action(momo, query.get("name", [""])[0])
+            if reply:
+                self.send_pet(reply)
+            else:
+                self.send(json.dumps({"error": "Unknown action"}), "application/json", 400)
+        elif url.path in PAGES:                          # the page itself
+            variable, content_type = PAGES[url.path]
+            self.send(globals()[variable], content_type)
+        else:
+            self.send("Not found", "text/plain", 404)
+
+    def log_message(self, format, *args):
+        pass  # keep the terminal quiet
+
+
+def run_server():
+    global momo
+    momo = Pet()
+    server = HTTPServer(("localhost", PORT), PetHandler)
+    print("🐣 " + PET_NAME + " is alive at  http://localhost:" + str(PORT))
+    print("   (press Ctrl + C to stop)")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\n👋 Bye! " + PET_NAME + " is sleeping now.")
+
 
 # ───── end of Part 12 ───────────────────────────────────────────────────────
 
