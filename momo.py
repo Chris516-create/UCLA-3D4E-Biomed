@@ -44,7 +44,34 @@ except Exception:
 #  PART 3 · The Voice
 # ═════════════════════════════════════════════════════════════════════════════
 
-# TODO: delete this line and paste Part 3 here
+## Part 3 · The Voice 💬
+# Things Momo says. Every few seconds it picks a random line for its stress level.
+
+MESSAGES = {
+    "light": [
+        "I feel great today!",
+        "Life is good. Want a snack?",
+        "So calm... like a cloud.",
+        "Let's learn something fun!",
+    ],
+    "medium": [
+        "Hmm, lots of homework...",
+        "I'm a little tense.",
+        "Maybe a short break would help?",
+        "My heart is beating a bit faster.",
+    ],
+    "heavy": [
+        "Too much! I'm overwhelmed!",
+        "Can we take a deep breath together?",
+        "My palms are sweaty...",
+        "Please help me relax!",
+    ],
+}
+
+
+def get_message(level):
+    return random.choice(MESSAGES.get(level, ["..."]))
+
 
 # ───── end of Part 3 ───────────────────────────────────────────────────────
 
@@ -348,31 +375,3 @@ if __name__ == "__main__":
     else:
         run_server()
 
-
-# Part 3 · The Voice 💬
-# Things Momo says. Every few seconds it picks a random line for its stress level.
-
-MESSAGES = {
-    "light": [
-        "I feel great today!",
-        "Life is good. Want a snack?",
-        "So calm... like a cloud.",
-        "Let's learn something fun!",
-    ],
-    "medium": [
-        "Hmm, lots of homework...",
-        "I'm a little tense.",
-        "Maybe a short break would help?",
-        "My heart is beating a bit faster.",
-    ],
-    "heavy": [
-        "Too much! I'm overwhelmed!",
-        "Can we take a deep breath together?",
-        "My palms are sweaty...",
-        "Please help me relax!",
-    ],
-}
-
-
-def get_message(level):
-    return random.choice(MESSAGES.get(level, ["..."]))
