@@ -398,7 +398,60 @@ button.active {
 #  PART 10 · The Messenger
 # ═════════════════════════════════════════════════════════════════════════════
 
-# TODO: delete this line and paste Part 10 here
+# Part 10 · The Messenger 📡
+# JavaScript that asks the Python server how Momo is doing, updates the
+# page, and makes all six buttons work.
+
+APP_JS = r"""
+function render(pet) {
+  document.body.dataset.level = pet.level;
+
+  document.getElementById("pet").className = "pet level-" + pet.level;
+  document.getElementById("face").textContent = pet.face;
+  document.getElementById("accessory").textContent = pet.accessory;
+  document.getElementById("speech").textContent = pet.message;
+  document.getElementById("weather").textContent = pet.level_info.weather;
+  document.getElementById("pet-name").textContent = pet.name;
+  document.getElementById("level-label").textContent = pet.level_info.label;
+
+  document.getElementById("heart-rate").textContent = pet.stats.heart_rate;
+  document.getElementById("gsr").textContent = pet.stats.gsr;
+  document.getElementById("happiness-bar").style.width = pet.stats.happiness + "%";
+  document.getElementById("energy-bar").style.width = pet.stats.energy + "%";
+
+  // highlight the button for the current stress level
+  document.querySelectorAll(".stress-btn").forEach(function (button) {
+    button.classList.toggle("active", button.dataset.level === pet.level);
+  });
+
+  // tell the heartbeat monitor (Part 12) how fast to beat
+  if (window.setHeartRate) {
+    window.setHeartRate(pet.stats.heart_rate);
+  }
+}
+
+function askServer(url) {
+  fetch(url)
+    .then(function (response) { return response.json(); })
+    .then(render)
+    .catch(function (error) { console.log("Server problem:", error); });
+}
+
+document.querySelectorAll(".stress-btn").forEach(function (button) {
+  button.addEventListener("click", function () {
+    askServer("/api/stress?level=" + button.dataset.level);
+  });
+});
+
+document.querySelectorAll(".care-btn").forEach(function (button) {
+  button.addEventListener("click", function () {
+    askServer("/api/action?name=" + button.dataset.action);
+  });
+});
+
+askServer("/api/pet");                                   // draw the pet right away
+setInterval(function () { askServer("/api/pet"); }, 4000); // check on it every 4 s
+"""
 
 # ───── end of Part 10 ───────────────────────────────────────────────────────
 
