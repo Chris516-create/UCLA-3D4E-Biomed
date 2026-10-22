@@ -108,7 +108,66 @@ except Exception:
 #  PART 11 · The Heart Monitor
 # ═════════════════════════════════════════════════════════════════════════════
 
-# TODO: delete this line and paste Part 11 here
+# Part 11 · The Heart Monitor 📈
+# JavaScript that draws a hospital-style ECG line. It beats faster and
+# changes color when Momo is stressed.
+
+HEARTBEAT_JS = r"""
+var bpm = 70;
+var canvas = document.getElementById("ecg");
+var ctx = canvas.getContext("2d");
+var SPEED = 0.12;            // pixels per millisecond
+var x = 0;
+var lastY = canvas.height / 2;
+var clock = 0;               // pretend time, in milliseconds
+var lastFrame = performance.now();
+
+window.setHeartRate = function (newBpm) {
+  bpm = newBpm;
+};
+
+// One heartbeat shape: small bump (P), big spike (R), dip (S), wave (T)
+function heartSignal(msIntoBeat) {
+  function bump(center, width, height) {
+    var d = (msIntoBeat - center) / width;
+    return height * Math.exp(-d * d);
+  }
+  return bump(60, 20, 0.15) + bump(150, 10, 1.0) - bump(175, 10, 0.3) + bump(330, 40, 0.25);
+}
+
+function lineColor() {
+  var level = document.body.dataset.level;
+  if (level === "heavy") return "#ff6b6b";
+  if (level === "medium") return "#ffd166";
+  return "#5ef08a";
+}
+
+function draw(now) {
+  var pixels = Math.floor((now - lastFrame) * SPEED);
+  if (pixels > 0) {
+    lastFrame = now;
+    ctx.strokeStyle = lineColor();
+    ctx.lineWidth = 2;
+    for (var i = 0; i < pixels; i++) {
+      clock += 1 / SPEED;
+      var beatLength = 60000 / bpm;
+      var y = canvas.height * 0.65 - heartSignal(clock % beatLength) * canvas.height * 0.55;
+      ctx.clearRect(x + 1, 0, 12, canvas.height); // erase just ahead of the line
+      ctx.beginPath();
+      ctx.moveTo(x, lastY);
+      ctx.lineTo(x + 1, y);
+      ctx.stroke();
+      x += 1;
+      lastY = y;
+      if (x >= canvas.width) x = 0; // wrap around like a real monitor
+    }
+  }
+  requestAnimationFrame(draw);
+}
+
+requestAnimationFrame(draw);
+"""
+
 
 # ───── end of Part 11 ───────────────────────────────────────────────────────
 
