@@ -36,7 +36,29 @@ except Exception:
 #  PART 2 · The Face Designer
 # ═════════════════════════════════════════════════════════════════════════════
 
-# TODO: delete this line and paste Part 2 here
+# Part 2 · The Face Designer 😊
+# Momo's face for each stress level, plus the little icon above its head.
+
+FACES = {
+    "light": "^ ‿ ^",
+    "medium": "• _ •",
+    "heavy": "> ﹏ <",
+}
+
+ACCESSORIES = {
+    "light": "🌸",
+    "medium": "💭",
+    "heavy": "💦",
+}
+
+
+def get_face(level):
+    return FACES.get(level, "o _ o")
+
+
+def get_accessory(level):
+    return ACCESSORIES.get(level, "")
+
 
 # ───── end of Part 2 ───────────────────────────────────────────────────────
 
